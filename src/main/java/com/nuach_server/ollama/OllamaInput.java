@@ -1,4 +1,4 @@
-package com.nuach_server.llm;
+package com.nuach_server.ollama;
 
 public record OllamaInput(
         String model,
