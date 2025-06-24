@@ -1,17 +1,17 @@
-package com.nuach_server.llm;
+package com.nuach_server.ollama;
 
 public record OllamaOutput(
         String model,
         String created_at,
         String response,
-        Boolean done,
+        boolean done,
         String done_reason,
-        int[]  context,
-        int total_duration,
-        int load_duration,
-        int prompt_eval_count,
-        int prompt_eval_duration,
-        int eval_count,
-        int eval_duration
+        long[]  context,
+        long total_duration,
+        long load_duration,
+        long prompt_eval_count,
+        long prompt_eval_duration,
+        long eval_count,
+        long eval_duration
 ) {
 }
