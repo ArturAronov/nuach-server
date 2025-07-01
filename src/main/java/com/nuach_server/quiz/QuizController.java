@@ -17,14 +17,30 @@ public class QuizController {
         this.ollamaInstructions = ollamaInstructions;
     }
 
+    private OllamaInput getOllamaQuery(String query){
+        return OllamaInput.createInput("llama3.2", query);
+    }
+
+    @PostMapping("submit-answer/")
+    public FeedbackWithAnswerOutput submitAnswer(@RequestBody AnswerInput input) {
+        OllamaInput feedbackQuery = getOllamaQuery(
+                ollamaInstructions.getAnswerFeedback(input.question(), input.answer())
+        );
+
+        OllamaInput answerQuery = getOllamaQuery(
+                ollamaInstructions.getAnswerPrompt(input.topic())
+        );
+
+        String ollamaFeedback = ollama.getPrompt(feedbackQuery);
+        String ollamaQuestion = ollama.getPrompt(answerQuery);
+
+        return FeedbackWithAnswerOutput.getOutput(ollamaFeedback, ollamaQuestion);
+    }
+
     @GetMapping("request-question/")
     public String requestQuestion(@RequestParam String query) {
-        OllamaInput ollamaObj = new OllamaInput(
-                "llama3.2",
-                ollamaInstructions.getAnswerPrompt(query),
-                false
-            );
+        OllamaInput answerQuery = getOllamaQuery(ollamaInstructions.getAnswerPrompt(query));
 
-        return ollama.getPrompt(ollamaObj);
+        return ollama.getPrompt(answerQuery);
     }
 }
