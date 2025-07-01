@@ -5,4 +5,7 @@ public record OllamaInput(
         String prompt,
         boolean stream
 ) {
+    public static OllamaInput createInput(String model, String prompt) {
+        return new OllamaInput(model, prompt, false);
+    }
 }
